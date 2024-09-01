@@ -1,0 +1,21 @@
+module vedic_32x32(
+    input [31:0] a,
+    input [31:0] b,
+    output [63:0] y
+);
+
+wire [31:0] z0, z1, z2, z3;
+wire [63:0] temp1, temp2, temp3;
+
+vedic_16x16 u1(a[15:0], b[15:0], z0);
+vedic_16x16 u2(a[31:16], b[15:0], z1);
+vedic_16x16 u3(a[15:0], b[31:16], z2);
+vedic_16x16 u4(a[31:16], b[31:16], z3);
+
+assign temp1 = {z1, 16'b0000000000000000} + z0;
+assign temp2 = {z3, 16'b0000000000000000} + z2;
+assign temp3 = {temp2, 16'b0000000000000000} + temp1;
+
+assign y = temp3;
+
+endmodule
